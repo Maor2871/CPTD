@@ -6,6 +6,7 @@ from math import *
 import math
 import numpy
 import os.path
+import os
 import select
 from PIL import Image
 from random import shuffle, randint, choice
@@ -1195,7 +1196,9 @@ class Tower(object):
 		
 		else:
 			
-			DISPLAYSURF.blit(pygame.transform.flip(rotate_image(self.image, self.rotation), False, True), self.coordination)
+			temp_img = pygame.transform.flip(self.image, False, True)
+
+			DISPLAYSURF.blit(rotate_image(temp_img, self.rotation), self.coordination)
 			
 			
 class Soldier(object):
@@ -1689,7 +1692,7 @@ class Game(object):
 			
 			DISPLAYSURF.blit(self.round_title[0], (self.round_title[1][0], self.round_title[1][1]))
 			
-			DISPLAYSURF.blit(pygame.font.SysFont("Palatino Linotype Regular" , 150).render(str(self.round), True, (0, 0, 0)), (self.round_title[1][0] + self.round_title[0].get_rect().width + 30, self.round_title[1][1] + 30))
+			DISPLAYSURF.blit(pygame.font.SysFont("Ravie" , 150).render(str(self.round), True, (0, 0, 0)), (self.round_title[1][0] + self.round_title[0].get_rect().width + 30, self.round_title[1][1] + 30))
 	
 	def tower_confirmation(self, tower):
 		"""
@@ -1813,13 +1816,19 @@ def rotate_image(image, angle):
 		The function Rotates an image while keeping its center and size.
 	"""
     
-	orig_rect = image.get_rect()
-	rot_image = pygame.transform.rotozoom(image, angle, 1)
-	rot_rect = orig_rect.copy()
-	rot_rect.center = rot_image.get_rect().center
-	rot_image = rot_image.subsurface(rot_rect).copy()
+	try:
 	
-	return rot_image
+		orig_rect = image.get_rect()
+		rot_image = pygame.transform.rotozoom(image, angle, 1)
+		rot_rect = orig_rect.copy()
+		rot_rect.center = rot_image.get_rect().center
+		rot_image = rot_image.subsurface(rot_rect).copy()
+		
+		return rot_image
+	
+	except Exception as e:
+
+		return image
 
 	
 def find_y_position(current_x_position, destination, step_length, game_function, proportion):
@@ -2495,15 +2504,21 @@ def Main_menu():
 	PREPARATION FOR THE MAIN LOOP.
 """
 
+server_ip = raw_input("please enter the ip address of the server: ")
+
 pygame.init()
 
-DISPLAYSURF = pygame.display.set_mode((1536, 864), pygame.FULLSCREEN)
+DISPLAYSURF = pygame.display.set_mode((1536, 864))
 
 pygame.display.set_caption('Cheese Party TD')
 
 fpsClock = pygame.time.Clock()
 
 restart_game = True
+
+if getattr(sys, 'frozen', False):
+
+	os.chdir(sys._MEIPASS)
 
 new_game_button = Button(( 618, 200), "new game.png", new_game_button, True, DISPLAYSURF)
 
@@ -2758,7 +2773,7 @@ while True:
 			try:
 
 				# Connect to the server.
-				my_socket.connect(('192.168.1.12', 951))
+				my_socket.connect((server_ip, 951))
 				
 				# Send to the server the name of the client.
 				my_socket.send(name_input.text)

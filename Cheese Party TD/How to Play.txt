@@ -1,0 +1,15 @@
+Welcome to Cheese Party TD
+
+1. Start the Cheese Party TD Server.exe file on a windows machine connected to the internet.
+
+2. Find the ip address of the machine which the server is currently running on:
+
+	- If the sever is running on a local machine, find the ip of the server by entering the command "ipconfig" in the command line of the server machine.
+
+	- If the server is running on a remote machine, find the ip of the server by searching "what is my ip adress" in a search engine, e.g. google.
+
+3. Start the Cheese Party TD.exe file, write the ip address of the server and press enter.
+
+4. Start the Cheese Party TD.exe file on a different machine, enter the same server ip.
+
+5. Play. 

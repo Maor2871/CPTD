@@ -6,6 +6,7 @@ import math
 import time
 from math import *
 import sys
+import os
 
 
 class Client(object):
@@ -675,6 +676,10 @@ def get_client_by_socket(client_socket):
 """
 	PREPARATION FOR THE MAIN LOOP.
 """
+
+if getattr(sys, 'frozen', False):
+
+	os.chdir(sys._MEIPASS)
 
 # Create the server socket.
 server_socket = socket.socket()
